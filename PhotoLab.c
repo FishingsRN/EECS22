@@ -101,10 +101,13 @@ int main(void)
                 scanf("%s", fname);
                 LoadImage(fname, R, G, B);
                 break;
-            /*case 2:
-                SaveImage("MyImage", R, G, B);
+            case 2:
+                printf("Please input the file name to save: ");
+                char sname[SLEN];
+                scanf("%s", sname);
+                SaveImage(sname, R, G, B);
                 break;
-            case 3:
+            /*case 3:
                 BlackNWhite(R, G, B);
                 break;
             case 4:

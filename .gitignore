@@ -8,6 +8,8 @@ PhotoLab.exe
 # object files
 *.o
 *.obj
+negative_diff.ppm
+negative.ppm
 
 # build folders
 build/
