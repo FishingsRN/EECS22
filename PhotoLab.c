@@ -14,6 +14,7 @@
 
 /*** function declarations ***/
 
+
 /* print a menu */
 void PrintMenu(void);
 
@@ -87,6 +88,13 @@ int main(void)
     unsigned char   B[WIDTH][HEIGHT];
 
     /* Please replace the following code with proper menu with function calls for DIP operations */
+    int option = 0;
+
+    while (option != 12){
+        PrintMenu();
+        scanf("%d", &option);
+    }
+
     if (LoadImage("EngHall", R, G, B) != 0)
     {
       return 1;
@@ -255,5 +263,23 @@ void AutoTest(unsigned char R[WIDTH][HEIGHT],
 /**************************************************************/
 /* Please add your function definitions here...               */
 /**************************************************************/
+
+void PrintMenu(void){
+    printf("--------------------------------\n");
+    printf("1: Load a PPM image\n");
+    printf("2: Save an image in PPM and JPEG format\n");
+    printf("3: Change a color image to Black & White\n");
+    printf("4: Make a negative of an image\n");
+    printf("5: Color filter an image\n");
+    printf("6: Sketch the edge of an image\n");
+    printf("7: Shuffle an image\n");
+    printf("8: Flip an image horizontally\n");
+    printf("9: Mirror an image vertically\n");
+    printf("10: Add Border to an image\n");
+    printf("11: Test all functions\n");
+    printf("12: Exit\n");
+    printf("please make your choice: ");
+    fflush(stdout);
+}
 
 /* EOF */
