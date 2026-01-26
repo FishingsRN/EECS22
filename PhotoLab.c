@@ -96,9 +96,12 @@ int main(void)
 
         switch (option){
             case 1:
-                LoadImage("EngHall", R, G, B);
+                printf("Please input the file name to load: ");
+                char fname[SLEN];
+                scanf("%s", fname);
+                LoadImage(fname, R, G, B);
                 break;
-            case 2:
+            /*case 2:
                 SaveImage("MyImage", R, G, B);
                 break;
             case 3:
@@ -130,7 +133,7 @@ int main(void)
                 break;
             case 12:
                 printf("Exiting the program.\n");
-                break;
+                break; */
             default:
                 printf("Invalid option. Please try again.\n");
         }
