@@ -93,6 +93,49 @@ int main(void)
     while (option != 12){
         PrintMenu();
         scanf("%d", &option);
+
+        switch (option){
+            case 1:
+                LoadImage("EngHall", R, G, B);
+                break;
+            case 2:
+                SaveImage("MyImage", R, G, B);
+                break;
+            case 3:
+                BlackNWhite(R, G, B);
+                break;
+            case 4:
+                Negative(R, G, B);
+                break;
+            case 5:
+                ColorFilter(R, G, B, 152, 135, 104, 20, 255, 0, 0);
+                break;
+            case 6:
+                Edge(R, G, B);
+                break;
+            case 7:
+                Shuffle(R, G, B);
+                break;
+            case 8:
+                HFlip(R, G, B);
+                break;
+            case 9:
+                VMirror(R, G, B);
+                break;
+            case 10:
+                AddBorder(R, G, B, "orange", 24);
+                break;
+            case 11:
+                AutoTest(R, G, B);
+                break;
+            case 12:
+                printf("Exiting the program.\n");
+                break;
+            default:
+                printf("Invalid option. Please try again.\n");
+        }
+
+
     }
 
     if (LoadImage("EngHall", R, G, B) != 0)
