@@ -2,6 +2,7 @@
 main
 main.exe
 a.out
+PhotoLab
 
 # object files
 *.o
