@@ -4,6 +4,8 @@ main.exe
 a.out
 PhotoLab
 PhotoLab.exe
+bw_diff.ppm
+bw.ppm
 
 # object files
 *.o

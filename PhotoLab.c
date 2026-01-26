@@ -107,13 +107,13 @@ int main(void)
                 scanf("%s", sname);
                 SaveImage(sname, R, G, B);
                 break;
-            /*case 3:
+            case 3:
                 BlackNWhite(R, G, B);
                 break;
             case 4:
                 Negative(R, G, B);
                 break;
-            case 5:
+            /*case 5:
                 ColorFilter(R, G, B, 152, 135, 104, 20, 255, 0, 0);
                 break;
             case 6:
@@ -331,4 +331,35 @@ void PrintMenu(void){
     fflush(stdout);
 }
 
+void BlackNWhite(unsigned char R[WIDTH][HEIGHT],
+		 unsigned char G[WIDTH][HEIGHT],
+		 unsigned char B[WIDTH][HEIGHT])
+    {
+        int x, y;
+        unsigned char gray;
+        for (y = 0; y < HEIGHT; y++) {
+            for (x = 0; x < WIDTH; x++) {
+                gray = (unsigned char)((R[x][y] + G[x][y] + B[x][y]) / 3);
+                R[x][y] = gray;
+                G[x][y] = gray;
+                B[x][y] = gray;
+            }
+        }
+        printf("Black & White operation is done!\n");
+    }
+
+void Negative(unsigned char R[WIDTH][HEIGHT],
+        unsigned char G[WIDTH][HEIGHT],
+        unsigned char B[WIDTH][HEIGHT]) 
+    {
+        int x, y;
+        for (y = 0; y < HEIGHT; y++) {
+            for (x = 0; x < WIDTH; x++) {
+                R[x][y] = 255 - R[x][y];
+                G[x][y] = 255 - G[x][y];
+                B[x][y] = 255 - B[x][y];
+            }
+        }
+        printf("Negative operation is done!\n");
+    }
 /* EOF */
