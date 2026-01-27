@@ -69,6 +69,12 @@ void AddBorder(unsigned char R[WIDTH][HEIGHT],
                unsigned char B[WIDTH][HEIGHT],
 	       char color[SLEN], int border_width);
 
+/* get color channels */
+void colorChannels(char color[SLEN], 
+            unsigned char *rVal,
+            unsigned char *gVal,
+            unsigned char *bVal);
+
 /* flip image horizontally */
 void HFlip(unsigned char R[WIDTH][HEIGHT],
 	   unsigned char G[WIDTH][HEIGHT],
@@ -148,30 +154,30 @@ int main(void)
             case 8:
                 HFlip(R, G, B);
                 break;
-            /*case 9:
+            case 9:
                 VMirror(R, G, B);
                 break;
             case 10:
-                AddBorder(R, G, B, "orange", 24);
+                printf("Please input the border color: ");
+                char color[SLEN];
+                scanf("%s", color);
+                printf("Please input the border width: ");
+                int border_width;
+                scanf("%d", &border_width);
+                AddBorder(R, G, B, color, border_width);
                 break;
             case 11:
                 AutoTest(R, G, B);
                 break;
             case 12:
                 printf("Exiting the program.\n");
-                break; */
+                break; 
             default:
                 printf("Invalid option. Please try again.\n");
         }
 
 
     }
-
-    if (LoadImage("EngHall", R, G, B) != 0)
-    {
-      return 1;
-    }
-
     /* End of replacing */
 
     return 0;
@@ -285,7 +291,7 @@ int SaveImage(const char fname[SLEN], unsigned char R[WIDTH][HEIGHT], unsigned c
 
 /*DO NOT EDIT AUTOTEST*/
 /* Uncomment AutoTest() to run all DIP functions automatically. */
-/*
+
 void AutoTest(unsigned char R[WIDTH][HEIGHT],
               unsigned char G[WIDTH][HEIGHT],
               unsigned char B[WIDTH][HEIGHT])
@@ -330,7 +336,7 @@ void AutoTest(unsigned char R[WIDTH][HEIGHT],
     SaveImage("shuffle", R, G, B);
     printf("Shuffle tested!\n\n");
 }
-*/
+
 
 /**************************************************************/
 /* Please add your function definitions here...               */
@@ -537,4 +543,82 @@ void HFlip(unsigned char R[WIDTH][HEIGHT],
         }
         printf("HFlip operation is done!\n");
     }
+
+void VMirror(unsigned char R[WIDTH][HEIGHT],
+        unsigned char G[WIDTH][HEIGHT],
+            unsigned char B[WIDTH][HEIGHT])
+    {
+        int x, y;
+        for (y = 0; y < HEIGHT / 2; y++){
+            for (x = 0; x <WIDTH; x++){
+                int mirror = HEIGHT -1 -y;
+
+                R[x][mirror] = R[x][y];
+                G[x][mirror] = G[x][y];
+                B[x][mirror] = B[x][y];
+            }
+        }
+        printf("VMirror operation is done!\n");
+    }
+
+void AddBorder(unsigned char R[WIDTH][HEIGHT],
+	       unsigned char G[WIDTH][HEIGHT],
+               unsigned char B[WIDTH][HEIGHT],
+	       char color[SLEN], int border_width)
+    {
+        unsigned char rVal = 0, gVal = 0, bVal = 0;
+        colorChannels(color, &rVal, &gVal, &bVal);
+        int x, y;
+        for (y = 0; y < HEIGHT; y++){
+            for (x = 0; x < WIDTH; x++){
+                if (x < border_width || x >= WIDTH - border_width ||
+                    y < border_width || y >= HEIGHT - border_width){
+                        R[x][y] = rVal;
+                        G[x][y] = gVal;
+                        B[x][y] = bVal;
+                    }
+            }
+        }
+        printf("Add Border operation is done!\n");
+    }
+
+void colorChannels(char color[SLEN], 
+            unsigned char *rVal,
+	        unsigned char *gVal,
+            unsigned char *bVal)
+{
+    *rVal = 0; *gVal = 0; *bVal = 0;
+
+    if (strcmp(color, "black") == 0){
+        *rVal = 0; *gVal = 0; *bVal = 0;
+    }
+    else if (strcmp(color, "white") == 0){
+        *rVal = 255; *gVal = 255; *bVal = 255;
+    }
+    else if (strcmp(color, "red") == 0){
+        *rVal = 255; *gVal = 0; *bVal = 0;
+    }
+    else if (strcmp(color, "green") == 0){
+        *rVal = 0; *gVal = 255; *bVal = 0;
+    }
+    else if (strcmp(color, "blue") == 0){
+        *rVal = 0; *gVal = 0; *bVal = 255;
+    }
+    else if (strcmp(color, "yellow") == 0){
+        *rVal = 255; *gVal = 255; *bVal = 0;
+    }
+    else if (strcmp(color, "orange") == 0){
+        *rVal = 255; *gVal = 165; *bVal = 0;
+    }
+    else if (strcmp(color, "cyan") == 0){
+        *rVal = 0; *gVal = 255; *bVal = 255;
+    }
+    else if (strcmp(color, "pink") == 0){
+        *rVal = 255; *gVal = 190; *bVal = 200;
+    }
+    else {
+        *rVal = 0; *gVal = 0; *bVal = 0; // default to black
+    }
+}
+
 /* EOF */

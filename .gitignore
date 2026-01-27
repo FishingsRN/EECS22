@@ -14,6 +14,10 @@ shuffle_diff.ppm
 shuffle.ppm
 hflip_diff.ppm
 hflip.ppm
+vmirror_diff.ppm
+vmirror.ppm
+border_diff.ppm
+border.ppm
 
 # object files
 *.o
