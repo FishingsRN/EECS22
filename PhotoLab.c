@@ -139,7 +139,7 @@ int main(void)
                 replace_r, replace_g, replace_b);
                 break;
             }
-            /*case 6:
+            case 6:
                 Edge(R, G, B);
                 break;
             case 7:
@@ -148,7 +148,7 @@ int main(void)
             case 8:
                 HFlip(R, G, B);
                 break;
-            case 9:
+            /*case 9:
                 VMirror(R, G, B);
                 break;
             case 10:
@@ -336,6 +336,7 @@ void AutoTest(unsigned char R[WIDTH][HEIGHT],
 /* Please add your function definitions here...               */
 /**************************************************************/
 
+/* Print Menu Function */
 void PrintMenu(void){
     printf("--------------------------------\n");
     printf("1: Load a PPM image\n");
@@ -351,9 +352,9 @@ void PrintMenu(void){
     printf("11: Test all functions\n");
     printf("12: Exit\n");
     printf("please make your choice: ");
-    fflush(stdout);
 }
 
+/* Change image to black & white */
 void BlackNWhite(unsigned char R[WIDTH][HEIGHT],
 		 unsigned char G[WIDTH][HEIGHT],
 		 unsigned char B[WIDTH][HEIGHT])
@@ -370,7 +371,7 @@ void BlackNWhite(unsigned char R[WIDTH][HEIGHT],
         }
         printf("Black & White operation is done!\n");
     }
-
+/* Invert colors (negative function)*/
 void Negative(unsigned char R[WIDTH][HEIGHT],
         unsigned char G[WIDTH][HEIGHT],
         unsigned char B[WIDTH][HEIGHT]) 
@@ -385,7 +386,7 @@ void Negative(unsigned char R[WIDTH][HEIGHT],
         }
         printf("Negative operation is done!\n");
     }
-
+/* Custom color filter function */
 void ColorFilter(unsigned char R[WIDTH][HEIGHT],
         unsigned char G[WIDTH][HEIGHT],
         unsigned char B[WIDTH][HEIGHT],
@@ -399,6 +400,8 @@ void ColorFilter(unsigned char R[WIDTH][HEIGHT],
                     int currG = G[x][y];
                     int currB = B[x][y];
 
+                    /* Given equations */
+
                     if (currR >= (target_r - threshold) && currR <= (target_r + threshold) &&
                         currG >= (target_g - threshold) && currG <= (target_g + threshold) &&
                         currB >= (target_b - threshold) && currB <= (target_b + threshold)){
@@ -411,6 +414,127 @@ void ColorFilter(unsigned char R[WIDTH][HEIGHT],
             }
             printf("Color filter operation is done!\n");
         }
-        
-    
+
+void Edge(unsigned char R[WIDTH][HEIGHT],
+	  unsigned char G[WIDTH][HEIGHT],
+          unsigned char B[WIDTH][HEIGHT])
+    {
+        unsigned char tempR[WIDTH][HEIGHT];
+        unsigned char tempG[WIDTH][HEIGHT];
+        unsigned char tempB[WIDTH][HEIGHT];
+
+        int x, y;
+        for (y = 1; y < HEIGHT - 1; y++){
+            for (x = 1; x < WIDTH - 1; x++){
+                /* Finding Neighboring pixels */
+                int RedA = R[x-1][y-1], RedB = R[x][y-1], RedC = R[x+1][y-1];
+                int RedD = R[x-1][y],   RedE = R[x][y],   RedF = R[x+1][y];
+                int RedG = R[x-1][y+1], RedH = R[x][y+1], RedI = R[x+1][y+1];
+
+                /* Given equations and repeated logic */
+                int satRed = -RedA - RedB - RedC - RedD + 8*RedE - RedF - RedG - RedH - RedI;
+                if (satRed < 0) satRed = 0;
+                if (satRed > 255) satRed = 255;
+                tempR[x][y] = (unsigned char)satRed;
+
+                int GreenA = G[x-1][y-1], GreenB = G[x][y-1], GreenC = G[x+1][y-1];
+                int GreenD = G[x-1][y],   GreenE = G[x][y],   GreenF = G[x+1][y];
+                int GreenG = G[x-1][y+1], GreenH = G[x][y+1], GreenI = G[x+1][y+1];
+
+                int satGreen = -GreenA - GreenB - GreenC - GreenD + 8*GreenE - GreenF - GreenG - GreenH - GreenI;
+                if (satGreen < 0) satGreen = 0;
+                if (satGreen > 255) satGreen = 255;
+                tempG[x][y] = (unsigned char)satGreen;
+
+                int BlueA = B[x-1][y-1], BlueB = B[x][y-1], BlueC = B[x+1][y-1];
+                int BlueD = B[x-1][y],   BlueE = B[x][y],   BlueF = B[x+1][y];
+                int BlueG = B[x-1][y+1], BlueH = B[x][y+1], BlueI = B[x+1][y+1];
+
+                int satBlue = -BlueA - BlueB - BlueC - BlueD + 8*BlueE - BlueF - BlueG - BlueH - BlueI;
+                if (satBlue < 0) satBlue = 0;
+                if (satBlue > 255) satBlue = 255;
+                tempB[x][y] = (unsigned char)satBlue;
+
+            }
+
+        }
+        /* Copy temp back to original*/
+        for (y = 0; y < HEIGHT; y++){
+            for (x = 0; x < WIDTH; x++){
+                R[x][y] = tempR[x][y];
+                G[x][y] = tempG[x][y];
+                B[x][y] = tempB[x][y];
+            }
+        }
+        printf("Edge detection operation is done!\n");
+    }
+
+void Shuffle(unsigned char R[WIDTH][HEIGHT],
+        unsigned char G[WIDTH][HEIGHT],
+            unsigned char B[WIDTH][HEIGHT])
+        {
+            int newWidth = WIDTH / 4;
+            int newHeight = HEIGHT / 4;
+            
+            int x, y;
+            for (int i = 0; i < 8; i++){
+                int blockA = i;
+                int blockB = 15 - i;
+
+                int rowA = blockA / 4;
+                int colA = blockA % 4;
+                int rowB = blockB / 4;
+                int colB = blockB % 4;
+
+                int Ax = colA * newWidth;
+                int Ay = rowA * newHeight;
+                int Bx = colB * newWidth;
+                int By = rowB * newHeight;
+
+                for (y = 0; y < newHeight; y++){
+                    for (x = 0; x < newWidth; x++){
+                        int ax = Ax + x, ay = Ay + y;
+                        int bx = Bx + x, by = By + y;
+
+                        unsigned char temp;
+
+                        temp = R[ax][ay]; R[ax][ay] = R[bx][by]; R[bx][by] = temp;
+                        temp = G[ax][ay]; G[ax][ay] = G[bx][by]; G[bx][by] = temp;
+                        temp = B[ax][ay]; B[ax][ay] = B[bx][by]; B[bx][by] = temp;
+                    }
+                }
+            }
+            printf("Shuffle operation is done!\n");
+        }
+
+void HFlip(unsigned char R[WIDTH][HEIGHT],
+    unsigned char G[WIDTH][HEIGHT],
+    unsigned char B[WIDTH][HEIGHT])
+    /* TWO POINTER IMPLEMENTATION!!!! Leetcode is paying off*/
+    {
+        for (int i = 0; i < HEIGHT; i++){
+            int left = 0;
+            int right = WIDTH - 1;
+
+            while (left < right){
+                unsigned char temp;
+
+                temp = R[left][i]; 
+                R[left][i] = R[right][i]; 
+                R[right][i] = temp;
+                
+                temp = G[left][i]; 
+                G[left][i] = G[right][i]; 
+                G[right][i] = temp;
+                
+                temp = B[left][i]; 
+                B[left][i] = B[right][i]; 
+                B[right][i] = temp;
+
+                left++;
+                right--;
+            }
+        }
+        printf("HFlip operation is done!\n");
+    }
 /* EOF */

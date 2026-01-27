@@ -8,6 +8,12 @@ bw_diff.ppm
 bw.ppm
 colorfilter_diff.ppm
 colorfilter.ppm
+edge_diff.ppm
+edge.ppm
+shuffle_diff.ppm
+shuffle.ppm
+hflip_diff.ppm
+hflip.ppm
 
 # object files
 *.o
