@@ -6,6 +6,8 @@ PhotoLab
 PhotoLab.exe
 bw_diff.ppm
 bw.ppm
+colorfilter_diff.ppm
+colorfilter.ppm
 
 # object files
 *.o

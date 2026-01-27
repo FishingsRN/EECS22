@@ -95,28 +95,51 @@ int main(void)
         scanf("%d", &option);
 
         switch (option){
-            case 1:
+            case 1: {
                 printf("Please input the file name to load: ");
                 char fname[SLEN];
                 scanf("%s", fname);
                 LoadImage(fname, R, G, B);
                 break;
-            case 2:
+            }
+            case 2: {
                 printf("Please input the file name to save: ");
                 char sname[SLEN];
                 scanf("%s", sname);
                 SaveImage(sname, R, G, B);
                 break;
-            case 3:
+            }
+            case 3: {
                 BlackNWhite(R, G, B);
                 break;
-            case 4:
+            }
+            case 4: {
                 Negative(R, G, B);
                 break;
-            /*case 5:
-                ColorFilter(R, G, B, 152, 135, 104, 20, 255, 0, 0);
+            }
+            case 5: 
+                {
+                int target_r, target_g, target_b, threshold, replace_r, replace_g, replace_b;
+                printf("Enter Red component for the target color: ");
+                scanf("%d", &target_r);
+                printf("Enter Green component for the target color: ");
+                scanf("%d", &target_g);
+                printf("Enter Blue component for the target color: ");
+                scanf("%d", &target_b);
+                printf("Enter threshold for the color difference: ");
+                scanf("%d", &threshold);
+                printf("Enter value Red component in the target color: ");
+                scanf("%d", &replace_r);
+                printf("Enter value Green component in the target color: ");
+                scanf("%d", &replace_g);
+                printf("Enter value Blue component in the target color: ");
+                scanf("%d", &replace_b);
+                
+                ColorFilter(R, G, B, target_r, target_g, target_b, threshold,
+                replace_r, replace_g, replace_b);
                 break;
-            case 6:
+            }
+            /*case 6:
                 Edge(R, G, B);
                 break;
             case 7:
@@ -362,4 +385,32 @@ void Negative(unsigned char R[WIDTH][HEIGHT],
         }
         printf("Negative operation is done!\n");
     }
+
+void ColorFilter(unsigned char R[WIDTH][HEIGHT],
+        unsigned char G[WIDTH][HEIGHT],
+        unsigned char B[WIDTH][HEIGHT],
+        int target_r, int target_g, int target_b, int threshold,
+        int replace_r, int replace_g, int replace_b)
+        {
+            int x, y;
+            for (y = 0; y < HEIGHT; y++){
+                for (x = 0; x < WIDTH; x++){    
+                    int currR = R[x][y];
+                    int currG = G[x][y];
+                    int currB = B[x][y];
+
+                    if (currR >= (target_r - threshold) && currR <= (target_r + threshold) &&
+                        currG >= (target_g - threshold) && currG <= (target_g + threshold) &&
+                        currB >= (target_b - threshold) && currB <= (target_b + threshold)){
+                            R[x][y] = replace_r;    
+                            G[x][y] = replace_g;
+                            B[x][y] = replace_b;
+                        }
+                        
+                }
+            }
+            printf("Color filter operation is done!\n");
+        }
+        
+    
 /* EOF */
