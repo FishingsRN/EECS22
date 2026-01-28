@@ -1,0 +1,12 @@
+The program allows for users to apply filters on a given image; the functions being loading and saving  
+images, black&white, negative, custom color, edge detection, shuffle, horizontal flip, vertical mirror, and applying   
+a border filter. 
+
+I implemented a switch case for user choice within main as it made development easy, as I could simply uncomment
+each case as I completed each function. Utilizing given hints or entire equations/"pseudocode" from the assignment
+manual made developing functions easier especially in the case of black&white, negative, color filter, hflip and    
+vmirror. I did find it a little more challenging with the other not mentioned functions, as even given hints or
+equations developing them felt tedious. However, the ending section of the manual with the mentioning important
+aspects of development/implementation helped a lot.
+
+Overall a good project. 
