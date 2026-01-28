@@ -18,6 +18,9 @@ vmirror_diff.ppm
 vmirror.ppm
 border_diff.ppm
 border.ppm
+EngHall.ppm
+PhotoLab.script
+PhotoLab.txt
 
 # object files
 *.o
