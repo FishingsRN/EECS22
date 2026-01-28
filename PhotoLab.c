@@ -1,5 +1,7 @@
 /*********************************************************************/
-/* PhotoLab.c: Assignment 2 for EECS 22, Winter 2026                 */
+/* PhotoLab.c: Assignment 2 for EECS 22, Winter 2026 */
+/* Author: Richard Nguyen */
+/* Date: January 2026*/
 /*********************************************************************/
 
 #include <stdio.h>
@@ -94,8 +96,9 @@ int main(void)
     unsigned char   B[WIDTH][HEIGHT];
 
     /* Please replace the following code with proper menu with function calls for DIP operations */
-    int option = 0;
+    int option = 0; 
 
+    /* option case for user choice */
     while (option != 12){
         PrintMenu();
         scanf("%d", &option);
@@ -178,7 +181,6 @@ int main(void)
 
 
     }
-    /* End of replacing */
 
     return 0;
 }
@@ -342,7 +344,7 @@ void AutoTest(unsigned char R[WIDTH][HEIGHT],
 /* Please add your function definitions here...               */
 /**************************************************************/
 
-/* Print Menu Function */
+/* print menu function */
 void PrintMenu(void){
     printf("--------------------------------\n");
     printf("1: Load a PPM image\n");
@@ -360,7 +362,8 @@ void PrintMenu(void){
     printf("please make your choice: ");
 }
 
-/* Change image to black & white */
+/* change image to black & white */
+/* repeated for loop logics for iterating through*/
 void BlackNWhite(unsigned char R[WIDTH][HEIGHT],
 		 unsigned char G[WIDTH][HEIGHT],
 		 unsigned char B[WIDTH][HEIGHT])
@@ -377,7 +380,7 @@ void BlackNWhite(unsigned char R[WIDTH][HEIGHT],
         }
         printf("Black & White operation is done!\n");
     }
-/* Invert colors (negative function)*/
+/* invert colors (negative function)*/
 void Negative(unsigned char R[WIDTH][HEIGHT],
         unsigned char G[WIDTH][HEIGHT],
         unsigned char B[WIDTH][HEIGHT]) 
@@ -392,7 +395,7 @@ void Negative(unsigned char R[WIDTH][HEIGHT],
         }
         printf("Negative operation is done!\n");
     }
-/* Custom color filter function */
+/* custom color filter function */
 void ColorFilter(unsigned char R[WIDTH][HEIGHT],
         unsigned char G[WIDTH][HEIGHT],
         unsigned char B[WIDTH][HEIGHT],
@@ -406,7 +409,7 @@ void ColorFilter(unsigned char R[WIDTH][HEIGHT],
                     int currG = G[x][y];
                     int currB = B[x][y];
 
-                    /* Given equations */
+                    /* given equations */
 
                     if (currR >= (target_r - threshold) && currR <= (target_r + threshold) &&
                         currG >= (target_g - threshold) && currG <= (target_g + threshold) &&
@@ -415,12 +418,13 @@ void ColorFilter(unsigned char R[WIDTH][HEIGHT],
                             G[x][y] = replace_g;
                             B[x][y] = replace_b;
                         }
+                    /* no need to implement "else" statement here, defaults to current color*/
                         
                 }
             }
             printf("Color filter operation is done!\n");
         }
-
+/* edge detection function */
 void Edge(unsigned char R[WIDTH][HEIGHT],
 	  unsigned char G[WIDTH][HEIGHT],
           unsigned char B[WIDTH][HEIGHT])
@@ -432,12 +436,12 @@ void Edge(unsigned char R[WIDTH][HEIGHT],
         int x, y;
         for (y = 1; y < HEIGHT - 1; y++){
             for (x = 1; x < WIDTH - 1; x++){
-                /* Finding Neighboring pixels */
+                /* finding neighboring pixels */
                 int RedA = R[x-1][y-1], RedB = R[x][y-1], RedC = R[x+1][y-1];
                 int RedD = R[x-1][y],   RedE = R[x][y],   RedF = R[x+1][y];
                 int RedG = R[x-1][y+1], RedH = R[x][y+1], RedI = R[x+1][y+1];
 
-                /* Given equations and repeated logic */
+                /* given equations and repeated logic */
                 int satRed = -RedA - RedB - RedC - RedD + 8*RedE - RedF - RedG - RedH - RedI;
                 if (satRed < 0) satRed = 0;
                 if (satRed > 255) satRed = 255;
@@ -464,7 +468,7 @@ void Edge(unsigned char R[WIDTH][HEIGHT],
             }
 
         }
-        /* Copy temp back to original*/
+        /* copy temp back to original*/
         for (y = 0; y < HEIGHT; y++){
             for (x = 0; x < WIDTH; x++){
                 R[x][y] = tempR[x][y];
@@ -474,7 +478,7 @@ void Edge(unsigned char R[WIDTH][HEIGHT],
         }
         printf("Edge detection operation is done!\n");
     }
-
+/* shuffle function */
 void Shuffle(unsigned char R[WIDTH][HEIGHT],
         unsigned char G[WIDTH][HEIGHT],
             unsigned char B[WIDTH][HEIGHT])
@@ -482,16 +486,17 @@ void Shuffle(unsigned char R[WIDTH][HEIGHT],
             int newWidth = WIDTH / 4;
             int newHeight = HEIGHT / 4;
             
-            int x, y;
-            for (int i = 0; i < 8; i++){
+            int x, y, i;
+            for (i = 0; i < 8; i++){
                 int blockA = i;
                 int blockB = 15 - i;
-
+                
                 int rowA = blockA / 4;
                 int colA = blockA % 4;
                 int rowB = blockB / 4;
                 int colB = blockB % 4;
-
+                
+                /* starting coordinates */
                 int Ax = colA * newWidth;
                 int Ay = rowA * newHeight;
                 int Bx = colB * newWidth;
@@ -503,22 +508,29 @@ void Shuffle(unsigned char R[WIDTH][HEIGHT],
                         int bx = Bx + x, by = By + y;
 
                         unsigned char temp;
-
-                        temp = R[ax][ay]; R[ax][ay] = R[bx][by]; R[bx][by] = temp;
-                        temp = G[ax][ay]; G[ax][ay] = G[bx][by]; G[bx][by] = temp;
-                        temp = B[ax][ay]; B[ax][ay] = B[bx][by]; B[bx][by] = temp;
+                        /* swapping pixels */
+                        temp = R[ax][ay]; 
+                        R[ax][ay] = R[bx][by]; 
+                        R[bx][by] = temp;
+                        temp = G[ax][ay]; 
+                        G[ax][ay] = G[bx][by]; 
+                        G[bx][by] = temp;
+                        temp = B[ax][ay]; 
+                        B[ax][ay] = B[bx][by]; 
+                        B[bx][by] = temp;
                     }
                 }
             }
             printf("Shuffle operation is done!\n");
         }
-
+/* horizontal flip function */
 void HFlip(unsigned char R[WIDTH][HEIGHT],
     unsigned char G[WIDTH][HEIGHT],
     unsigned char B[WIDTH][HEIGHT])
     /* TWO POINTER IMPLEMENTATION!!!! Leetcode is paying off*/
     {
-        for (int i = 0; i < HEIGHT; i++){
+        int i;
+        for (i = 0; i < HEIGHT; i++){
             int left = 0;
             int right = WIDTH - 1;
 
@@ -543,7 +555,7 @@ void HFlip(unsigned char R[WIDTH][HEIGHT],
         }
         printf("HFlip operation is done!\n");
     }
-
+/* vertical mirror function */
 void VMirror(unsigned char R[WIDTH][HEIGHT],
         unsigned char G[WIDTH][HEIGHT],
             unsigned char B[WIDTH][HEIGHT])
@@ -560,14 +572,14 @@ void VMirror(unsigned char R[WIDTH][HEIGHT],
         }
         printf("VMirror operation is done!\n");
     }
-
+/* add border function */
 void AddBorder(unsigned char R[WIDTH][HEIGHT],
 	       unsigned char G[WIDTH][HEIGHT],
                unsigned char B[WIDTH][HEIGHT],
 	       char color[SLEN], int border_width)
     {
         unsigned char rVal = 0, gVal = 0, bVal = 0;
-        colorChannels(color, &rVal, &gVal, &bVal);
+        colorChannels(color, &rVal, &gVal, &bVal); /* pass by reference bc of pointer dereference */
         int x, y;
         for (y = 0; y < HEIGHT; y++){
             for (x = 0; x < WIDTH; x++){
@@ -581,7 +593,7 @@ void AddBorder(unsigned char R[WIDTH][HEIGHT],
         }
         printf("Add Border operation is done!\n");
     }
-
+/* color channel function */
 void colorChannels(char color[SLEN], 
             unsigned char *rVal,
 	        unsigned char *gVal,
@@ -617,7 +629,7 @@ void colorChannels(char color[SLEN],
         *rVal = 255; *gVal = 190; *bVal = 200;
     }
     else {
-        *rVal = 0; *gVal = 0; *bVal = 0; // default to black
+        *rVal = 0; *gVal = 0; *bVal = 0; /* default to black */
     }
 }
 
